@@ -1,0 +1,73 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Apr 24 10:44:46 2018
+@author: chandu
+"""
+
+import numpy as np
+from sklearn.cluster import KMeans
+from sklearn.metrics import silhouette_samples, silhouette_score
+import matplotlib.pyplot as plt
+import csv
+data=input("Enter file name which contains only numeric values :")
+fp=open(data, 'r')     #copying the address of the excel file
+read=csv.reader(fp)      #reading the data from above address
+print(read)
+c=[]    #creating an empty list to insert data
+f=input('Enter number of columns to be considerd :')    
+#reading number of colunms to consider(integer)
+fl=[]   #creating an empty list to read the columns number
+print('enter column numbers ')
+
+'''Reading column numbers'''
+for i in range(int(f)):     #iterates length of columns considered
+    column=int(input())-1   #as index start with 0 we perform -1
+    fl.append(column)   #appending the column number to a list
+'''Appending the selected columns to a new list'''
+for i in read:  #Reads every row in a dataset
+    c_l=[]      #empty list to consider required colunms
+    for j in fl:
+        c_l.append(i[j])
+    c.append(c_l)    
+    #removing unwanted columns and appending required columns
+
+
+del c[0]    #deleting the 1st row as it is index(string)
+sum=0
+length=len(c)   #number of rows
+c1=[]
+print('\nTotal fields present =',length,'\n\n')
+clust=int(input('Enter number of clusters required :'))  
+#number of clusters required
+kmeans = KMeans(n_clusters=clust,random_state=0).fit(c)     
+#predefined kMean function present in sklearn.cluster library
+l=kmeans.labels_    #classified data into different clusters
+s_avg=silhouette_score(c,l)     #average of all clusters
+pie=[]
+for j in range(clust):  #iterations no.of clusters we have desided
+    d=[]
+    num=0   #to find number of fields in each cluster
+    m=0
+    for i in c:
+        if(j==l[m]):    
+        #checking whether it belongs to the required cluster or not
+            d.append(i)
+            num=num+1 #counting no.of datasets in each cluster
+        m=m+1 #incrementing for next value of l
+
+    # finding the mean of each fields(columns) of each cluster
+    per=(num / length) * 100
+    print(num,'nodes are present in',j + 1,'clusters which occupies',per,'%')
+    for col in range(len(d[0])):    #iterates no.of columns
+        m = []
+        for row in d:   #iterates no.of rows
+            m.append(float(row[col]))
+        print('mean of', col + 1, 'is :', np.mean(m))   
+        #print the mean of each column
+    pie.append(per)
+    print('\n')
+plt.pie(pie,autopct='%1.1f%%',shadow=True,startangle=140)   
+#ploting with respect to percentage
+print('silhouette score is',s_avg,'\n')
+plt.show()
+

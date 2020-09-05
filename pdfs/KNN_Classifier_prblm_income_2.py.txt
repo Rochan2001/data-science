@@ -1,0 +1,97 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Sep 27 10:52:07 2019
+
+@author: Ammu
+"""
+
+#To visualize the data
+import seaborn as sns
+#To work with dataframes
+import pandas as pd
+#To perform numerical operations
+import numpy as np
+#To partition the data
+from sklearn.model_selection import train_test_split
+#importing the library for logistic regression
+from sklearn.linear_model import LogisticRegression
+#importing performance metrics
+from sklearn.metrics import accuracy_score,confusion_matrix
+
+#Logistict Regression
+"""
+Data encoding
+the salary status categories are encoded as 0,1
+"""
+#importing data
+data=pd.read_csv("income.csv",na_values=[" ?"])
+data2=data.dropna(axis=0) 
+#Optimization of model by removing uncessary variables
+#Regression - remove insignificant variables
+cat_salStat={" less than or equal to 50,000":0,
+             " greater than 50,000":1}
+data2["SalStat"].replace(cat_salStat,inplace=True)
+print(data2["SalStat"].head(6))
+cols=["gender","nativecountry","race","JobType"]
+new_data=data2.drop(cols,axis=1,inplace=True)
+new_data=pd.get_dummies(data2,drop_first=True)
+#storing the column names
+column_list=list(new_data.columns)
+print(column_list)
+
+#seperating input features from the data
+features=list(set(column_list)-set(["SalStat"]))
+print(features)
+#Storing output variable values in y
+y=new_data["SalStat"].values
+print(y)
+#storing input feature values in x
+x=new_data[features].values
+print(x)
+
+#splitting the data into train and test
+train_x,test_x,train_y,test_y=train_test_split(x,y,test_size=0.3,
+                                               random_state=0)
+
+
+#%%
+#KNN
+#importing the library of KNN
+from sklearn.neighbors import KNeighborsClassifier
+#importing matplotlib library
+import matplotlib.pyplot as plt
+#%%
+
+#storing the K-nearest neighbors classifiers
+KNN_classifier=KNeighborsClassifier(n_neighbors=5)
+#model building
+KNN_classifier.fit(train_x,train_y)
+
+#predicting the test values with model
+prediction=KNN_classifier.predict(test_x)
+print(prediction)
+
+#evaluating the model
+print("performance")
+conf_matrix=confusion_matrix(test_y,prediction)
+print(conf_matrix)
+
+#calculating accuracy
+acc_score=accuracy_score(test_y,prediction)
+print("accuracy score")
+print(acc_score)
+
+#miss classified
+print("miss classified")
+print((test_y!=prediction).sum())
+
+#Effect of k value on classifier
+miss_classified=[]
+for k in range(1,20):
+    knn=KNeighborsClassifier(n_neighbors=k)
+    knn.fit(train_x,train_y)
+    pred_k=knn.predict(test_x)
+    miss_classified.append((test_y!=pred_k).sum())
+print("Miss classified")
+print(miss_classified)
+

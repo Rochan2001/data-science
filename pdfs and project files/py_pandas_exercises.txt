@@ -1,0 +1,32 @@
+1.sno=[1,2,3,4,5,6,7,8,9,10]
+name=['Sravanthi','Shirisha','Gayathri','Rajesh','Ashok','Divya','Hari   krishan','Uttara','Praveen','Lakshmi']
+m1=[50, 35, 55,80, 66, 45, 90, 28, 60, 70]
+m2=[60,52,85,75,49,59,65,75,90,39]
+m3=[74,78,86,80,92,49,59,68,65,75]
+
+Problem: 
+sno,name, m1,m2,m3 are predefined lists which contains the student data.
+a.	Create a data frame with available lists with same names as column names. 
+b.	Display data frame. 
+
+
+2.Load data from insurance.csv into dataframe with column names.
+From given data set print first five rows andlast five
+
+
+3.Create a data frame by using a data set i.e loan.csv find out the following
+1.	Dimensions of dataset
+2.	Size of Dataset
+3.	Data types
+
+
+4.The vehicles which are parked at our college premises having number plates are listed in list L (except characters) , L is already defined create a seriesbased on vehicle numbers. Park them in ascending order.
+ L=[3423,6554,1234,1459,2543,3654,4213,5643,5893,4876,8653,2347,9865,3425,7856,5643,8764,34 52] 
+
+
+
+
+
+
+
+
